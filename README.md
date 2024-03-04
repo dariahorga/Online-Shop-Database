@@ -12,10 +12,3 @@ This project focuses on designing and implementing a relational database using O
 - **PL/SQL Subprograms**: Implement stored procedures and functions in PL/SQL for performing database operations such as insertion, updating, deletion, and querying.
 - **Triggers**: Implement triggers at various levels (row-level and statement-level) to enforce business rules and maintain data consistency.
 
-## Functionalities
-
-- Creation of tables with appropriate data types and constraints.
-- Defining relationships between tables to establish referential integrity.
-- Implementation of PL/SQL subprograms for performing database operations.
-- Utilization of triggers to enforce data integrity constraints and business rules.
-
