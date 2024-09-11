@@ -1,21 +1,4 @@
---ex4
-CREATE TABLE furnizor (
-  furnizor_id NUMBER(10) PRIMARY KEY,
-  nume VARCHAR(100) NOT NULL,
-  adresa VARCHAR(300)
-);
-
-CREATE TABLE categorie (
-  categorie_id NUMBER(10) PRIMARY KEY,
-  nume VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE livrare (
-  livrare_id NUMBER(10) PRIMARY KEY,
-  data_livrare DATE,
-  metoda_livrare VARCHAR(100)
-);
-
+--4.	Implementati în Oracle diagrama conceptuala realizata: definiti toate tabelele, definind toate constrângerile de integritate necesare
 
 CREATE TABLE client (
   client_id NUMBER(10) PRIMARY KEY,
@@ -25,6 +8,56 @@ CREATE TABLE client (
   numar_telefon NUMBER(10) NOT NULL,
   email VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE livrare (
+  livrare_id NUMBER(10) PRIMARY KEY,
+  data_livrare DATE,
+  metoda_livrare VARCHAR(100)
+);
+
+CREATE TABLE furnizor (
+  furnizor_id NUMBER(10) PRIMARY KEY,
+  nume_furnizor VARCHAR(100) NOT NULL,
+  adresa VARCHAR(300)
+);
+
+CREATE TABLE categorie (
+  categorie_id NUMBER(10) PRIMARY KEY,
+  nume_categorie VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE marime (
+  marime_id NUMBER(10) PRIMARY KEY,
+  numar_marime NUMBER(10) NOT NULL
+  );
+  
+CREATE TABLE culoare (
+  culoare_id NUMBER(10) PRIMARY KEY,
+  nume_culoare varchar(20) NOT NULL
+  );
+
+
+CREATE TABLE detalii_produs ( 
+  detalii_produs_id NUMBER(10) PRIMARY KEY,
+  culoare_id NUMBER(10),
+  marime_id NUMBER(10),
+  FOREIGN KEY (culoare_id) REFERENCES culoare(culoare_id),
+  FOREIGN KEY (marime_id) REFERENCES marime(marime_id)
+); 
+
+  CREATE TABLE produs (
+  produs_id NUMBER(10) PRIMARY KEY,
+  furnizor_id NUMBER(10),
+  categorie_id NUMBER(10),
+  detalii_produs_id NUMBER(10),
+  nume_produs VARCHAR(100) NOT NULL,
+  pret NUMBER(10) NOT NULL,
+  descriere VARCHAR(500),
+  FOREIGN KEY (furnizor_id) REFERENCES furnizor(furnizor_id),
+  FOREIGN KEY (categorie_id) REFERENCES categorie(categorie_id),
+  FOREIGN KEY (detalii_produs_id) REFERENCES detalii_produs(detalii_produs_id)
+);
+
 
 CREATE TABLE comanda (
   comanda_id NUMBER(10) PRIMARY KEY,
@@ -37,75 +70,30 @@ CREATE TABLE comanda (
   FOREIGN KEY (livrare_id) REFERENCES livrare(livrare_id)
 );
 
-  CREATE TABLE produs (
-  produs_id NUMBER(10) PRIMARY KEY,
-  furnizor_id NUMBER(10),
-  categorie_id NUMBER(10),
-  nume VARCHAR(100) NOT NULL,
-  pret NUMBER(10) NOT NULL,
-  descriere VARCHAR(500),
-  FOREIGN KEY (furnizor_id) REFERENCES furnizor(furnizor_id),
-  FOREIGN KEY (categorie_id) REFERENCES categorie(categorie_id)
-);
-
-CREATE TABLE marime (
-  marime_id NUMBER(10) PRIMARY KEY,
-  numar NUMBER(10) NOT NULL
-  );
-  
-   CREATE TABLE culoare (
-  culoare_id NUMBER(10) PRIMARY KEY,
-  nume varchar(20) NOT NULL
-  );
-  
-  CREATE TABLE inventar ( 
-  inventar_id NUMBER(10) PRIMARY KEY,
-  produs_id NUMBER(10),
-  culoare_id NUMBER(10),
-  marime_id NUMBER(10),
-  FOREIGN KEY (produs_id) REFERENCES produs(produs_id),
-  FOREIGN KEY (culoare_id) REFERENCES culoare(culoare_id),
-  FOREIGN KEY (marime_id) REFERENCES marime(marime_id)
-); 
-
 CREATE TABLE produse_comandate (
  produse_comandate_id NUMBER(10) PRIMARY KEY,
- inventar_id NUMBER(10),
+ produs_id NUMBER(10),
  comanda_id NUMBER(10),
  cantitate NUMBER(10),
  pret NUMBER(10),
- FOREIGN KEY (inventar_id) REFERENCES inventar(inventar_id),
+ FOREIGN KEY (produs_id) REFERENCES produs(produs_id),
  FOREIGN KEY (comanda_id) REFERENCES comanda(comanda_id)
  );
- 
---ex5
 
-INSERT INTO furnizor VALUES (11, 'ABC Company', 'Strada alexandru cel bun 67 Bucuresti');
-INSERT INTO furnizor VALUES (12, 'XYZ Supplier Ltd.', 'Strada Stefan cel mare 56 Suceava');
-INSERT INTO furnizor VALUES (13, 'Suppliers Inc.', ' Bulevardul eroilor 56 , bloc T54 scara C, Targul Jiu');
-INSERT INTO furnizor VALUES (14, 'Supreva', 'Bulevardul Unirii 76 Bucuresti');
-INSERT INTO furnizor VALUES (15, 'Zoia Supplier Ltd.', 'Strada Popa Nan 89 Oradea');
-
-INSERT INTO categorie
-VALUES(12,'imbracaminte');
-INSERT INTO categorie
-VALUES(13,'incaltaminte');
-INSERT INTO categorie
-VALUES(14,'accesorii');
-
+--5. Ad?uga?i informa?ii coerente în tabelele create.
 
 INSERT INTO client
-VALUES(21,'Ionescu','Raluca','Alexandru Ioan Cuza 56 Bucuresti',0722222222,'ionescuraluca@yahoo.com');
+VALUES(1,'Ionescu','Raluca','Alexandru Ioan Cuza 56 Bucuresti',0722222222,'ionescuraluca@yahoo.com');
 INSERT INTO client
-VALUES(22,'Popescu','Alexandru','Independentei 22 bloc T63 scara B Bucuresti',07222345682,'alex_popescu@yahoo.com');
+VALUES(2,'Popescu','Alexandru','Independentei 22 bloc T63 scara B Bucuresti',07222345682,'alex_popescu@yahoo.com');
 INSERT INTO client
-VALUES(23,'Anghel','Andreea','Alexandru Osobescu Ploiesti bloc 17A',0771234509,'anghelandreea234@gmail.com');
+VALUES(3,'Anghel','Andreea','Alexandru Osobescu Ploiesti bloc 17A',0771234509,'anghelandreea234@gmail.com');
 INSERT INTO client
-VALUES(24,'Horga','Daria','Oituz 456 Bucuresti',0771208478,'dariahorga@yahoo.com');
+VALUES(4,'Horga','Daria','Oituz 456 Bucuresti',0771208478,'dariahorga@yahoo.com');
 INSERT INTO client
-VALUES(25,'Iancu', 'Maria Alexandra','Aleea Militari 467 Ploiesti',0722345678,'iancu_andreea@yahoo.com');
+VALUES(5,'Iancu', 'Maria Alexandra','Aleea Militari 467 Ploiesti',0722345678,'iancu_andreea@yahoo.com');
 INSERT INTO client
-VALUES(26,'Popescu', 'Ana','Deleni nr 6 Bucuresti',0722224321,'popescuana234@yahoo.com');
+VALUES(6,'Popescu', 'Ana','Deleni nr 6 Bucuresti',0722224321,'popescuana234@yahoo.com');
 
 
 INSERT INTO livrare VALUES (1,TO_DATE('12-09-2023','DD-MM-YYYY'),'curier');    
@@ -118,211 +106,212 @@ INSERT INTO livrare VALUES (7,TO_DATE('21-12-2023','DD-MM-YYYY'),'curier');
 INSERT INTO livrare VALUES (8,TO_DATE('24-12-2023','DD-MM-YYYY'),'curier');
 INSERT INTO livrare VALUES (9,TO_DATE('24-12-2023','DD-MM-YYYY'),'curier');
 
+INSERT INTO furnizor VALUES (11, 'ABC Company', 'Strada alexandru cel bun 67 Bucuresti');
+INSERT INTO furnizor VALUES (12, 'XYZ Supplier Ltd.', 'Strada Stefan cel mare 56 Suceava');
+INSERT INTO furnizor VALUES (13, 'Suppliers Inc.', ' Bulevardul eroilor 56 , bloc T54 scara C, Targul Jiu');
+INSERT INTO furnizor VALUES (14, 'Supreva', 'Bulevardul Unirii 76 Bucuresti');
+INSERT INTO furnizor VALUES (15, 'Zoia Supplier Ltd.', 'Strada Popa Nan 89 Oradea');
+
+INSERT INTO categorie
+VALUES(12,'imbracaminte');
+INSERT INTO categorie
+VALUES(13,'incaltaminte');
+INSERT INTO categorie
+VALUES(14,'accesorii');  
+
+INSERT INTO marime VALUES (1,32);  
+INSERT INTO marime VALUES (2,34);  
+INSERT INTO marime VALUES (3,36);  
+INSERT INTO marime VALUES (4,38);  
+INSERT INTO marime VALUES (5,40);
+INSERT INTO marime VALUES (6,42);  
+INSERT INTO marime VALUES (7,44);  
 
 
-INSERT INTO comanda VALUES (1, 21,260 ,1,TO_DATE('10-09-2023','DD-MM-YYYY'),'numerar');
-INSERT INTO comanda VALUES (2, 22,110 ,2,TO_DATE('10-10-2023','DD-MM-YYYY'),'numerar');
-INSERT INTO comanda VALUES (3, 23,150 ,3,TO_DATE('14-11-2023','DD-MM-YYYY'),'card');
-INSERT INTO comanda VALUES (4, 24,240 ,4,TO_DATE('20-11-2023','DD-MM-YYYY'),'numerar');
-INSERT INTO comanda VALUES (5, 26,250 ,5,TO_DATE('20-12-2023','DD-MM-YYYY'),'card');
-INSERT INTO comanda VALUES (6, 25,320 ,6,TO_DATE('21-12-2023','DD-MM-YYYY'),'card');
-INSERT INTO comanda VALUES (7, 25,310 ,7,TO_DATE('22-12-2023','DD-MM-YYYY'),'numerar');
-INSERT INTO comanda VALUES (8, 21,300 ,8,TO_DATE('25-12-2023','DD-MM-YYYY'),'card');
-INSERT INTO comanda VALUES (9, 23,180 ,9,TO_DATE('28-12-2023','DD-MM-YYYY'),'card');
-
-
-INSERT INTO produs VALUES (123, 11, 12, 'rochie midi decupata', 150, 'Rochie midi confectionata cu tesatura din amestec de viscoza, cu guler rotund, fara maneca, cu decupaje laterale ajustabile cu funde');
-INSERT INTO produs VALUES (124, 15, 12, 'rochie mini cu imprimeu', 120, 'Rochie cu guler rotund, decolteu  n V, m neca lunga cu elastic  n partea inferioara si aplicatie cu insertii de dantela');
-INSERT INTO produs VALUES (125, 11, 12, 'camasa satinata', 100, 'Camasa cu guler si rever. Decolteu  n V. M neca lunga cu manseta.  nchidere frontala cu nasturi');
-INSERT INTO produs VALUES (126, 15, 12, 'fusta mini denim', 90, 'Fusta cu talie  nalta. Cinci buzunare. Efect prespalat.  nchidere frontala cu fermoar si nasture metalic');
-INSERT INTO produs VALUES (127, 15, 12, 'fusta-pantalon cu cute', 110, 'Fusta-pantalon cu talie  nalta. Fermoar ascuns  n cusatura. Dublura la interior, tip shorts');
-INSERT INTO produs VALUES (128, 12, 13, 'botine joase', 250, 'Pantofi tip ghete plate din piele. Catarame  n lateral. Talpa tip track.  nchidere prin intermediul unui fermoar. V rf rotund');
-INSERT INTO produs VALUES (129, 13, 13, 'ghete cauciucate', 180, 'Pantofi tip cizme plate cauciucate. Talpa voluminoasa. V rf rotund');
-INSERT INTO produs VALUES (130, 14, 13, 'balerini din piele', 120, 'Pantofi fara toc tip balerini Mary Jane din piele.  nchidere  n fata prin intermediul unei barete cu catarama');
-INSERT INTO produs VALUES (131, 12, 14, 'fular din lana cu franjuri', 70, 'Fular confectionat din l na 100%. Franjuri la capete');
-INSERT INTO produs VALUES (132, 14, 14, 'manusi cu efect de piele', 60, 'Manusi confectionate din material cu efect de piele combinat cu tricot. Captuseala moale la atingere');
-INSERT INTO produs VALUES (133, 12, 14, 'caciula din tricot', 70, 'Caciula tip beanie din tricot cu margine  ndoita');
-
-
-
-  INSERT INTO marime VALUES (1,32);  
-  INSERT INTO marime VALUES (2,34);  
-  INSERT INTO marime VALUES (3,36);  
-  INSERT INTO marime VALUES (4,38);  
-  INSERT INTO marime VALUES (5,40);
-  INSERT INTO marime VALUES (6,42);  
-  INSERT INTO marime VALUES (7,44);  
-  
-
-  
-  INSERT INTO culoare VALUES (11,'rosu'); 
-  INSERT INTO culoare VALUES (12,'albastru');
-  INSERT INTO culoare VALUES (13,'alb');
-  INSERT INTO culoare VALUES (14,'negru');
-  INSERT INTO culoare VALUES (15,'verde');
-  INSERT INTO culoare VALUES (16,'maro');
-  INSERT INTO culoare VALUES (17,'violet');
-  INSERT INTO culoare VALUES (18,'roz');
- 
-
-INSERT INTO inventar VALUES (1,123,14,2);
-INSERT INTO inventar VALUES (2,123,14,3);
-INSERT INTO inventar VALUES (3,123,14,4);
-INSERT INTO inventar VALUES (4,124,11,2);
-INSERT INTO inventar VALUES (5,124,11,3);
-INSERT INTO inventar VALUES (6,124,11,4);
-INSERT INTO inventar VALUES (7,124,16,2);
-INSERT INTO inventar VALUES (8,124,16,3);
-INSERT INTO inventar VALUES (9,124,16,4);
-INSERT INTO inventar VALUES (10,124,16,5);
-INSERT INTO inventar VALUES (11,125,13,2);
-INSERT INTO inventar VALUES (12,125,13,5);
-INSERT INTO inventar VALUES (13,125,13,6);
-INSERT INTO inventar VALUES (14,125,13,7);
-INSERT INTO inventar VALUES (15,126,15,1);
-INSERT INTO inventar VALUES (16,126,15,2);
-INSERT INTO inventar VALUES (17,127,17,3);
-INSERT INTO inventar VALUES (18,127,17,4);
-INSERT INTO inventar VALUES (19,128,14,3);
-INSERT INTO inventar VALUES (20,128,14,3);
-INSERT INTO inventar VALUES (21,129,12,3);
-INSERT INTO inventar VALUES (22,130,14,1);
-INSERT INTO inventar VALUES (23,130,14,2);
-INSERT INTO inventar VALUES (24,130,14,3);
-INSERT INTO inventar VALUES (25,130,14,4);
-INSERT INTO inventar VALUES (26,131,18,3);
-INSERT INTO inventar VALUES (27,131,11,3);
-INSERT INTO inventar VALUES (28,131,12,3);
-INSERT INTO inventar VALUES (29,132,14,3);
-INSERT INTO inventar VALUES (30,133,15,3);
-INSERT INTO inventar VALUES (31,133,16,3);
+INSERT INTO culoare VALUES (11,'rosu'); 
+INSERT INTO culoare VALUES (12,'albastru');
+INSERT INTO culoare VALUES (13,'alb');
+INSERT INTO culoare VALUES (14,'negru');
+INSERT INTO culoare VALUES (15,'verde');
+INSERT INTO culoare VALUES (16,'maro');
+INSERT INTO culoare VALUES (17,'violet');
+INSERT INTO culoare VALUES (18,'roz');
 
 
  
-INSERT INTO produse_comandate VALUES (1,29,1,1,60);
-INSERT INTO produse_comandate VALUES (2,12,1,2,200);
-INSERT INTO produse_comandate VALUES (3,18,2,1,110);
+INSERT INTO detalii_produs VALUES (1,11,1);
+INSERT INTO detalii_produs VALUES (2,12,1);
+INSERT INTO detalii_produs VALUES (3,17,1);
+INSERT INTO detalii_produs VALUES (4,18,1);
+INSERT INTO detalii_produs VALUES (5,15,2);
+INSERT INTO detalii_produs VALUES (6,16,1);
+INSERT INTO detalii_produs VALUES (7,13,1);
+INSERT INTO detalii_produs VALUES (8,17,3);
+INSERT INTO detalii_produs VALUES (9,14,5);
+INSERT INTO detalii_produs VALUES (10,15,7);
+INSERT INTO detalii_produs VALUES (11,11,2);
+INSERT INTO detalii_produs VALUES (12,12,5);
+INSERT INTO detalii_produs VALUES (13,17,4);
+INSERT INTO detalii_produs VALUES (14,13,4);
+INSERT INTO detalii_produs VALUES (15,14,3);
+INSERT INTO detalii_produs VALUES (16,14,4);
+INSERT INTO detalii_produs VALUES (17,13,5);
+INSERT INTO detalii_produs VALUES (18,15,3);
+INSERT INTO detalii_produs VALUES (19,13,5);
+INSERT INTO detalii_produs VALUES (20,18,7);
+
+INSERT INTO produs VALUES (1,11,12,3,'rochie midi decupata',150,'Rochie midi confectionata cu tesatura din amestec de viscoza, cu guler rotund, fara maneca, cu decupaje laterale ajustabile cu funde');
+INSERT INTO produs VALUES (2,11,12,20,'rochie midi decupata',150,'Rochie midi confectionata cu tesatura din amestec de viscoza, cu guler rotund, fara maneca, cu decupaje laterale ajustabile cu funde');
+INSERT INTO produs VALUES (3,11,12,13,'rochie midi decupata',150,'Rochie midi confectionata cu tesatura din amestec de viscoza, cu guler rotund, fara maneca, cu decupaje laterale ajustabile cu funde');
+INSERT INTO produs VALUES (4,11,12,4,'rochie midi decupata',150,'Rochie midi confectionata cu tesatura din amestec de viscoza, cu guler rotund, fara maneca, cu decupaje laterale ajustabile cu funde');
+INSERT INTO produs VALUES (5,15,12,15,'rochie mini cu imprimeu',120,'Rochie cu guler rotund, decolteu în V, mâneca lunga cu elastic în partea inferioara si aplicatie cu insertii de dantela');
+INSERT INTO produs VALUES (6,15,12,16,'rochie mini cu imprimeu',120,'Rochie cu guler rotund, decolteu în V, mâneca lunga cu elastic în partea inferioara si aplicatie cu insertii de dantela');
+INSERT INTO produs VALUES (7,11,12,1,'camasa satinata',100,'Camasa cu guler si rever. Decolteu în V. Mâneca lunga cu manseta. Închidere frontala cu nasturi');
+INSERT INTO produs VALUES (8,15,12,4,'fusta mini denim',90,'Fusta cu talie înalta. Cinci buzunare. Efect prespalat. Închidere frontala cu fermoar si nasture metalic');
+INSERT INTO produs VALUES (9,15,12,2,'fusta-pantalon cu cute',110,'Fusta-pantalon cu talie înalta. Fermoar ascuns în cusatura. Dublura la interior, tip shorts');
+INSERT INTO produs VALUES (10,15,12,1,'fusta-pantalon cu cute',110,'Fusta-pantalon cu talie înalta. Fermoar ascuns în cusatura. Dublura la interior, tip shorts');
+INSERT INTO produs VALUES (11,15,12,4,'fusta-pantalon cu cute',110,'Fusta-pantalon cu talie înalta. Fermoar ascuns în cusatura. Dublura la interior, tip shorts');
+INSERT INTO produs VALUES (12,15,12,17,'fusta-pantalon cu cute',110,'Fusta-pantalon cu talie înalta. Fermoar ascuns în cusatura. Dublura la interior, tip shorts');
+INSERT INTO produs VALUES (13,12,13,8,'botine joase',250,'Pantofi tip ghete plate din piele. Catarame în lateral. Talpa tip track. Închidere prin intermediul unui fermoar. Vârf rotund');
+INSERT INTO produs VALUES (14,13,13,9,'ghete cauciucate',180,'Pantofi tip cizme plate cauciucate. Talpa voluminoasa. Vârf rotund');
+INSERT INTO produs VALUES (15,14,13,12,'balerini din piele',120,'Pantofi fara toc tip balerini Mary Jane din piele. Închidere în fata prin intermediul unei barete cu catarama');
+INSERT INTO produs VALUES (16,14,13,15,'balerini din piele',120,'Pantofi fara toc tip balerini Mary Jane din piele. Închidere în fata prin intermediul unei barete cu catarama');
+INSERT INTO produs VALUES (17,12,14,15,'fular din lana cu franjuri',70,'Fular confectionat din lâna 100%. Franjuri la capete');
+INSERT INTO produs VALUES (18,12,14,16,'fular din lana cu franjuri',70,'Fular confectionat din lâna 100%. Franjuri la capete');
+INSERT INTO produs VALUES (19,14,14,15,'manusi cu efect de piele',60,'Manusi confectionate din material cu efect de piele combinat cu tricot. Captuseala moale la atingere');
+INSERT INTO produs VALUES (20,12,14,15,'caciula din tricot',70,'Caciula tip beanie din tricot cu margine îndoita');
+INSERT INTO produs VALUES (21,15,12,2,'fusta mini denim',90,'Fusta cu talie înalta. Cinci buzunare. Efect prespalat. Închidere frontala cu fermoar si nasture metalic');
+
+
+
+INSERT INTO comanda VALUES (1,1,260,1,TO_DATE('10-09-2023','DD-MM-YYYY'),'numerar');
+INSERT INTO comanda VALUES (2,2,110,2,TO_DATE('10-10-2023','DD-MM-YYYY'),'numerar');
+INSERT INTO comanda VALUES (3,3,150,3,TO_DATE('14-11-2023','DD-MM-YYYY'),'card');
+INSERT INTO comanda VALUES (4,3,240,4,TO_DATE('20-11-2023','DD-MM-YYYY'),'numerar');
+INSERT INTO comanda VALUES (5,6,250,5,TO_DATE('20-12-2023','DD-MM-YYYY'),'card');
+INSERT INTO comanda VALUES (6,1,320,6,TO_DATE('21-12-2023','DD-MM-YYYY'),'card');
+INSERT INTO comanda VALUES (7,5,310,7,TO_DATE('22-12-2023','DD-MM-YYYY'),'numerar');
+INSERT INTO comanda VALUES (8,4,300,8,TO_DATE('25-12-2023','DD-MM-YYYY'),'card');
+INSERT INTO comanda VALUES (9,3,180,9,TO_DATE('28-12-2023','DD-MM-YYYY'),'card');
+
+INSERT INTO produse_comandate VALUES (1,19,1,1,60);
+INSERT INTO produse_comandate VALUES (2,9,1,2,200);
+INSERT INTO produse_comandate VALUES (3,11,2,1,110);
 INSERT INTO produse_comandate VALUES (4,3,3,1,150);
-INSERT INTO produse_comandate VALUES (5,13,4,1,100);
-INSERT INTO produse_comandate VALUES (6,31,4,1,70);
-INSERT INTO produse_comandate VALUES (7,27,4,1,70);
-INSERT INTO produse_comandate VALUES (8,19,5,1,250);
-INSERT INTO produse_comandate VALUES (9,19,6,1,250);
-INSERT INTO produse_comandate VALUES (10,28,6,1,70);
-INSERT INTO produse_comandate VALUES (11,31,7,1,70);
-INSERT INTO produse_comandate VALUES (12,10,7,1,120);
-INSERT INTO produse_comandate VALUES (13,5,7,1,120);
+INSERT INTO produse_comandate VALUES (5,7,4,1,100);
+INSERT INTO produse_comandate VALUES (6,17,4,1,70);
+INSERT INTO produse_comandate VALUES (7,18,4,1,70);
+INSERT INTO produse_comandate VALUES (8,13,5,1,250);
+INSERT INTO produse_comandate VALUES (9,13,6,1,250);
+INSERT INTO produse_comandate VALUES (10,17,6,1,70);
+INSERT INTO produse_comandate VALUES (11,17,7,1,70);
+INSERT INTO produse_comandate VALUES (12,15,7,1,120);
+INSERT INTO produse_comandate VALUES (13,16,7,1,120);
 INSERT INTO produse_comandate VALUES (14,1,8,2,300);
-INSERT INTO produse_comandate VALUES (15,21,9,1,180);
+INSERT INTO produse_comandate VALUES (15,14,9,1,180);
 
 
---6
+--6.	Formula?i în limbaj natural o problem? pe care s? o rezolva?i folosind un subprogram stocat independent care s? utilizeze toate cele 3 tipuri de colec?ii studiate. Apela?i subprogramul.
+--Enunt: Defini?i un subprogram stocat independent prin care s? afi?a?i produsele de tip imbracaminte din fiecare comanda de peste o anumita suma de bani. Categoria si suma totala a comenzii sunt date ca parametri.
 
--- Se da id-ul unui produs. Afisati pentru fiecare comanda care contine respectivul produs: detalii despre client(nume, prenume, email si id), id-ul comenzii si produsele. 
---Afisati 'nu exista' in cazul in care nu au fost plasate comenzi cu acel produs
 
-CREATE OR REPLACE PROCEDURE afisare_produse_comanda ( p_produs_id produs.produs_id%TYPE) 
-AS
-
- TYPE clienti_i IS TABLE OF client%ROWTYPE; -- tablou imbricat
-  clienti_table clienti_i := clienti_i();
-
-  TYPE vector IS VARRAY(100) OF comanda%ROWTYPE; -- VARRAY
-  comanda_table vector := vector();
-
-  numar NUMBER(10):= 0;
-  
+CREATE OR REPLACE PROCEDURE p6 (
+    pret_comanda comanda.pret_total%TYPE,
+    categorie_produs categorie.nume_categorie%TYPE
+) IS
+    TYPE p_client IS VARRAY(100) OF client.client_id%TYPE;
+    t_client p_client;
+    TYPE p_comanda IS TABLE OF comanda.comanda_id%TYPE INDEX BY PLS_INTEGER;
+    t_comanda p_comanda;
+    TYPE t_produse_comanda IS TABLE OF produs.nume_produs%TYPE;
+    produse_comanda t_produse_comanda;
+    nr_produse NUMBER;
 BEGIN
-    --numaram cate comenzi au produsul respectiv
-    SELECT COUNT(*)
-    INTO numar
-    FROM produse_comandate pc, inventar i,comanda c
-    WHERE i.inventar_id = pc.inventar_id and pc.inventar_id=c.comanda_id and i.produs_id=p_produs_id;
-            
-  comanda_table.extend(numar+1);
-  
-  --selectam datele despre o comanda care are produsul respectiv
-  SELECT distinct c.*
-  BULK COLLECT INTO comanda_table
-  FROM comanda c
-  JOIN produse_comandate pc ON c.comanda_id = pc.comanda_id
-  JOIN inventar i ON pc.inventar_id = i.inventar_id
-  WHERE i.produs_id = p_produs_id;
-  
-    IF comanda_table.COUNT=0 THEN
-   DBMS_OUTPUT.PUT_LINE('Nu exista comenzi cu produsul respectiv!');
-   RETURN;
-  END IF;
-  
-  --selectam doar clientii care au dat o comanda cu produsul respectiv
-FOR i IN comanda_table.FIRST .. comanda_table.LAST LOOP
-    clienti_table.EXTEND;
-    SELECT DISTINCT cl.*
-    INTO clienti_table(clienti_table.LAST)
+
+    SELECT distinct cl.client_id
+    BULK COLLECT INTO t_client
     FROM client cl
-    WHERE cl.client_id = comanda_table(i).client_id;
-END LOOP;
-   
-      --daca am gasit comenzi afisam produsele
-IF comanda_table.COUNT > 0 THEN
-   FOR i IN clienti_table.FIRST .. clienti_table.LAST LOOP
-   DBMS_OUTPUT.PUT_LINE('Client ID: ' || clienti_table(i).client_id);
-   DBMS_OUTPUT.PUT_LINE(clienti_table(i).nume ||' ' || clienti_table(i).prenume);
-   DBMS_OUTPUT.PUT_LINE(clienti_table(i).email);
-   DBMS_OUTPUT.PUT_LINE('----------------------------------------------------');
-   
-        FOR j IN comanda_table.FIRST .. comanda_table.LAST LOOP
-          IF comanda_table(j).client_id=clienti_table(i).client_id THEN
-             DECLARE
-                    TYPE produse_i IS TABLE OF VARCHAR(100) INDEX BY PLS_INTEGER; --tablou indexat
-                    produse_table produse_i;
-             BEGIN
-              SELECT p.nume
-              BULK COLLECT INTO produse_table
-              FROM produse_comandate pc, inventar i, produs p
-              WHERE p.produs_id=i.produs_id and i.inventar_id = pc.inventar_id and pc.comanda_id=comanda_table(j).comanda_id;
-       
-              DBMS_OUTPUT.PUT_LINE('  Comanda ID: ' || comanda_table(j).comanda_id);
-              DBMS_OUTPUT.PUT_LINE('---------------------');
-               IF produse_table.COUNT > 0 THEN
-                 FOR k IN produse_table.FIRST .. produse_table.LAST LOOP
-                   numar := numar + 1;
-                   DBMS_OUTPUT.PUT_LINE(k || '. ' || produse_table(k));
-                 END LOOP;
-               END IF;
-            END;
-           END IF; 
+    JOIN comanda c ON cl.client_id = c.client_id
+    WHERE c.pret_total >= pret_comanda;
+
+    IF t_client.COUNT = 0 THEN
+        RAISE NO_DATA_FOUND;
+    END IF;
+
+    FOR i IN t_client.FIRST..t_client.LAST LOOP
+        SELECT c.comanda_id
+        BULK COLLECT INTO t_comanda
+        FROM comanda c
+        WHERE c.pret_total >= pret_comanda AND c.client_id = t_client(i);
+
+        FOR j IN t_comanda.FIRST..t_comanda.LAST LOOP
+            SELECT COUNT(pd.produs_id)
+            INTO nr_produse
+            FROM produs p
+            JOIN categorie c ON p.categorie_id = c.categorie_id
+            JOIN produse_comandate pd ON p.produs_id = pd.produs_id
+            WHERE UPPER(c.nume_categorie) = UPPER(categorie_produs)
+            AND pd.comanda_id = t_comanda(j);
+
+            IF nr_produse = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('In comanda cu ID_ul ' || t_comanda(j) || ', clientul cu ID-ul ' || t_client(i) || ' nu are produse din categoria respectiva.');   
+            ELSE
+                SELECT p.nume_produs
+                BULK COLLECT INTO produse_comanda
+                FROM produs p
+                JOIN categorie c ON p.categorie_id = c.categorie_id
+                JOIN produse_comandate pd ON p.produs_id = pd.produs_id
+                WHERE UPPER(c.nume_categorie) = UPPER(categorie_produs)
+                AND pd.comanda_id = t_comanda(j);
+
+                DBMS_OUTPUT.PUT_LINE('In comanda ' || t_comanda(j) || ', clientul ' || t_client(i) || ' are produsele:');
+                
+                FOR k IN produse_comanda.FIRST..produse_comanda.LAST LOOP
+                    DBMS_OUTPUT.PUT_LINE(k || '. ' || produse_comanda(k));
+                END LOOP;
+            END IF;
         END LOOP;
-            DBMS_OUTPUT.NEW_LINE;
-            DBMS_OUTPUT.NEW_LINE;
-   END LOOP;
-END IF;
-END;
+        DBMS_OUTPUT.PUT_LINE('------------------------');
+    END LOOP;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20000, 'Nu exista comenzi cu un pret total mai mare de '|| pret_comanda);
+END p6;
 /
+
+-- Apelare procedura
 BEGIN
-  afisare_produse_comanda(131);
+    p6(250,'accesorii');
 END;
 /
---7
---Afisati numele clientului si detalii(despre comanda) pentru comenzile care au ca metoda de livrare 'curier' si un pret total mai mare de 200.
-CREATE OR REPLACE PROCEDURE afisare_clienti_comanda( p_livrare livrare.metoda_livrare%TYPE, p_pret comanda.pret_total%TYPE) AS 
-   
-   --selectam numele si prenumele clientului avand id-ul de livrare        
-  CURSOR clienti (id comanda.livrare_id%TYPE) IS
+
+
+--7. Formula?i în limbaj natural o problem? pe care s? o rezolva?i folosind un subprogram stocat independent care s? utilizeze 2 tipuri diferite de cursoare studiate, unul dintre acestea fiind cursor parametrizat, dependent de cel?lalt cursor. Apela?i subprogramul.
+--Enunt: Definiti o procedura care afiseaza numele clientilor si detalii despre comenzile care au o anumita metoda de livrare si un pret total minim. Metoda de livrare si suma de bani sunt date ca parametri. 
+
+
+
+CREATE OR REPLACE PROCEDURE p7(
+    p_livrare livrare.metoda_livrare%TYPE, 
+    p_pret comanda.pret_total%TYPE
+) AS 
+    -- Select?m numele ?i prenumele clientului având ID-ul de livrare       
+    CURSOR clienti (id comanda.livrare_id%TYPE) IS
         SELECT c.nume || ' ' || c.prenume AS result
         FROM client c
         JOIN comanda co ON c.client_id = co.client_id
         WHERE co.livrare_id = id;
     
-    --selectam id-ul livrarilor care au ca metoda de livrare curier, si au ca pret_total o suma mai mare de p_pret
-  CURSOR livrari (p_livrare livrare.metoda_livrare%TYPE) IS
-                SELECT l.livrare_id
-                FROM livrare l
-                JOIN comanda co on co.livrare_id=l.livrare_id
-                WHERE UPPER(l.metoda_livrare) LIKE UPPER(p_livrare) AND co.pret_total >= p_pret;
+    -- Select?m ID-ul livr?rilor care au ca metod? de livrare curier ?i au un pre? total mai mare de p_pret
+    CURSOR livrari (p_livrare livrare.metoda_livrare%TYPE) IS
+        SELECT l.livrare_id
+        FROM livrare l
+        JOIN comanda co ON co.livrare_id = l.livrare_id
+        WHERE UPPER(l.metoda_livrare) LIKE UPPER(p_livrare) AND co.pret_total >= p_pret;
   
-  --selectam comenzile avand id-ul lor de livrare          
-  CURSOR comenzi (id livrare.livrare_id%TYPE ) IS
+    -- Select?m comenzile având ID-ul lor de livrare          
+    CURSOR comenzi (id livrare.livrare_id%TYPE ) IS
         SELECT comanda_id, pret_total, metoda_plata
         FROM comanda 
         WHERE livrare_id = id;
@@ -330,202 +319,305 @@ CREATE OR REPLACE PROCEDURE afisare_clienti_comanda( p_livrare livrare.metoda_li
     id comanda.comanda_id%TYPE;
     pret comanda.pret_total%TYPE;
     plata comanda.metoda_plata%TYPE;
-    
+    nr_comenzi NUMBER;
+    nr_livrari NUMBER;
 BEGIN
-    FOR livrari_i in livrari(p_livrare) LOOP
+    SELECT COUNT(*)
+    INTO nr_livrari
+    FROM livrare l
+    JOIN comanda co ON co.livrare_id = l.livrare_id
+    WHERE UPPER(l.metoda_livrare) LIKE UPPER(p_livrare) AND co.pret_total >= p_pret;
+
+    IF nr_livrari = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Nu s-au g?sit livr?ri care s? corespund? criteriilor specificate.');
+        RETURN;
+    END IF;
+
+    FOR livrari_i IN livrari(p_livrare) LOOP
         OPEN comenzi(livrari_i.livrare_id);
-            FETCH comenzi INTO id,pret,plata;
-            DBMS_OUTPUT.PUT_LINE('Comanda cu numarul ' || id);
-            DBMS_OUTPUT.PUT_LINE('------------------------');
-            DBMS_OUTPUT.PUT_LINE('Pret:' || pret);
-            DBMS_OUTPUT.PUT_LINE('Metoda plata:' || plata);
+        FETCH comenzi INTO id, pret, plata;
+            
+        DBMS_OUTPUT.PUT_LINE('Comanda cu num?rul ' || id);
+        DBMS_OUTPUT.PUT_LINE('------------------------');
+        DBMS_OUTPUT.PUT_LINE('Pre?: ' || pret);
+        DBMS_OUTPUT.PUT_LINE('Metoda plat?: ' || plata);
+            
         CLOSE comenzi;
-        
+            
         FOR clienti_i IN clienti(livrari_i.livrare_id) LOOP
-            DBMS_OUTPUT.PUT_LINE(clienti_i.result);
+                DBMS_OUTPUT.PUT_LINE(clienti_i.result);
         END LOOP;
-        
+
         DBMS_OUTPUT.NEW_LINE;
         DBMS_OUTPUT.NEW_LINE;
     END LOOP;
-END;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('A ap?rut o eroare: ' || SQLERRM);
+END p7;
 /
-       
-       
+            
 BEGIN
-    afisare_clienti_comanda('curier', 200);
+    p7('curier', 400);
 END;
 /
 
---8
--- Avand o culoare de produse data, determinati numarul de produse de 'imbracaminte' cumparate pe acea culoare
-CREATE OR REPLACE FUNCTION afisare_produse_culoare(id culoare.culoare_id%TYPE, categ_ categorie.nume%type) RETURN NUMBER 
+
+--8.  Formula?i în limbaj natural o problem? pe care s? o rezolva?i folosind un subprogram stocat independent de tip func?ie care s? utilizeze într-o singur? comand? SQL 3 dintre tabelele definite. Defini?i minim 2 excep?ii proprii. Apela?i subprogramul astfel încât s? eviden?ia?i toate cazurile definite ?i tratate.
+--Enunt: Definiti un subprogram care avand o culoare de produse data si o categorie, determina numarul de produse cumparate pe acea culoare. Id-ul culorii si numele categoriei sunt date ca parametri de intrare.
+--Cele 3 exceptii definite sunt: 
+--•	INVALID_COLOUR_ID EXCEPTION: id-ul culorii nu este in intervalul 11-18
+--•	NO_PRODUCTS_FOUND EXCEPTION: nu gasim produse pe culoarea respectiva
+--•	NO_ORDERS_FOUND EXCEPTION: nu gasim comenzi care sa contina acele produse
+
+CREATE OR REPLACE FUNCTION p8(id culoare.culoare_id%TYPE, categ_ categorie.nume_categorie%TYPE) RETURN NUMBER 
 IS 
     nr_produse NUMBER;
-    TYPE tip_tabel IS TABLE OF inventar%rowtype INDEX BY PLS_INTEGER;
-    tabel tip_tabel;
-    categ categorie.categorie_id%type;
+    TYPE t_produse IS TABLE OF detalii_produs%ROWTYPE INDEX BY PLS_INTEGER;
+    tabel_produse t_produse;
+    categorie_produs categorie.categorie_id%TYPE;
     
     --exceptii
-    NEGATIVE_NUMBER EXCEPTION;
-    NO_DATA_FOUND1 EXCEPTION;
-    NO_DATA_FOUND2 EXCEPTION;
+    INVALID_COLOUR_ID EXCEPTION;
+    NO_PRODUCTS_FOUND EXCEPTION;
+    NO_ORDERS_FOUND EXCEPTION;
 
 BEGIN 
-    IF id < 0 THEN -- codul culorii nu e valid
-        RAISE NEGATIVE_NUMBER;
+    IF id < 11 OR id > 18 THEN -- codul culorii nu e valid
+        RAISE INVALID_COLOUR_ID;
     END IF;
     
     --selectam toate produsele din inventar care sunt pe culoarea respectiva
     SELECT *
-    BULK COLLECT INTO tabel
-    FROM inventar
+    BULK COLLECT INTO tabel_produse
+    FROM detalii_produs
     WHERE culoare_id = id;
     
-    --avem mesaj de eroare in cazul in care nu le gasim
-    IF SQL%NOTFOUND THEN
-        RAISE NO_DATA_FOUND1;
+    --avem mesaj de eroare in cazul in care nu gasim produse
+    IF tabel_produse.COUNT = 0 THEN
+        RAISE NO_PRODUCTS_FOUND;
     END IF;
     
-    --cautam id-ul pentru 'imbracaminte'
+    --cautam id-ul pentru categoria dorita avand numele
     SELECT categorie_id
-    INTO categ
-    FROM categorie
-    WHERE UPPER(nume) LIKE UPPER(categ_);
-    
-    --cautam numarul de produse cu respectivele conditii
-   SELECT COUNT(i.inventar_id)
-   INTO nr_produse
-   FROM produse_comandate pc 
-   JOIN inventar i ON (i.inventar_id = pc.inventar_id)
-   JOIN produs p on (p.produs_id=i.produs_id)
-   WHERE i.culoare_id = id and p.categorie_id=categ;
+    INTO categorie_produs
+    FROM categorie 
+    WHERE UPPER(nume_categorie) LIKE UPPER(categ_);
+
+    --cautam numarul de produse care indeplinesc conditiile
+    SELECT COUNT(pc.produs_id)
+    INTO nr_produse
+    FROM produse_comandate pc 
+    JOIN produs p ON p.produs_id = pc.produs_id
+    JOIN detalii_produs dp ON dp.detalii_produs_id = p.detalii_produs_id
+    WHERE dp.culoare_id = id AND p.categorie_id = categorie_produs;
 
     --eroare in cazul in care nu exista produse
-    IF nr_produse = 0  THEN
-        RAISE NO_DATA_FOUND2;
+    IF nr_produse = 0 THEN
+        RAISE NO_ORDERS_FOUND;
     END IF;
     
     RETURN nr_produse;
     
-    EXCEPTION
-        WHEN NEGATIVE_NUMBER THEN
-            DBMS_OUTPUT.PUT_LINE('Codul culorii nu poate sa fie negativ!');
-            RETURN -1;
-        WHEN NO_DATA_FOUND1 THEN
-            DBMS_OUTPUT.PUT_LINE('Nu exista produse pe culoarea cu codul ' || id);
-            RETURN -1;
-        WHEN NO_DATA_FOUND2 THEN
-            DBMS_OUTPUT.PUT_LINE('Nu exista produse de imbracaminte cumparate cu acea culoare!');
-            RETURN -1;
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('Codul de eroare: '  || SQLCODE);
-            DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM); 
-            RETURN -1;
+EXCEPTION
+    WHEN INVALID_COLOUR_ID THEN
+        DBMS_OUTPUT.PUT_LINE('Codul culorii este invalid!');
+        RETURN -1;
+    WHEN NO_PRODUCTS_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Nu exista produse pe culoarea cu codul ' || id);
+        RETURN -1;
+    WHEN NO_ORDERS_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Nu exista produse de tipul ' || categ_ || ' cumparate cu acea culoare!');
+        RETURN -1;
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Codul de eroare: '  || SQLCODE);
+        DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM); 
+        RETURN -1;
 END;
 /
+SET SERVEROUTPUT ON;
 
 DECLARE 
     numar NUMBER;
-    id culoare.culoare_id%type:= &id;
-    categ_ categorie.nume%type := 'imbracaminte';
+    id culoare.culoare_id%TYPE := &id;
+    categ_ categorie.nume_categorie%TYPE := 'imbracaminte';
 BEGIN
-    numar := afisare_produse_culoare(id,categ_);
+    numar := p8(id, categ_);
     IF numar > -1 THEN
-        DBMS_OUTPUT.PUT_LINE('Rezultatul pentru culoarea cu id-ul ' || id ||' este: ' || numar );
+        DBMS_OUTPUT.PUT_LINE('Rezultatul pentru culoarea cu id-ul ' || id || ' este: ' || numar);
     END IF;
 END;
 /
-SET SERVEROUTPUT ON;
 
---9
---Afisati id-ul comenzilor pe care le-a plasat un client, al carui nume este dat de la tastatura, luand in calcul doar comenzile care contin produse de la furnizorul 'XYZ Supplier Ltd.'
-CREATE OR REPLACE PROCEDURE afisare_clienti_comenzi_(nume_client client.nume%type,nume_furnizor furnizor.nume%type)
-AS 
-    TYPE tabel_index IS TABLE OF comanda.comanda_id%type INDEX BY PLS_INTEGER;
-    comenzi tabel_index;
-    TYPE tabel_index_clienti IS TABLE OF client%rowtype INDEX BY PLS_INTEGER;
-    clienti tabel_index_clienti;
+
+-- 9.Formulați în limbaj natural o problemă pe care să o rezolvați folosind un subprogram stocat independent de tip procedură care să utilizeze într-o singură comandă SQL 5 dintre tabelele definite. Tratați toate excepțiile care pot apărea, incluzând excepțiile NO_DATA_FOUND și TOO_MANY_ROWS. Apelați subprogramul astfel încât să evidențiați toate cazurile tratate.
+
+--Enunt: Definiti o procedura care afiseaza pentru un client al carui nume este dat ca parametru produsele din comenzile sale care provin de la un furnizor anume si sunt pe o anumita marime. Trebuie afisat numarul de comenzi al acestuia, cat si numarul de comenzi care respecta cerintele, detalii despre client. 
+--Exceptiile tratate: 
+--•	Numele clientul nu se afla in baza de date. (NO_DATA_FOUND)
+--•	Exista mai multi clienti cu acelasi nume de familie. (TOO_MANY_ROWS)
+
+
+CREATE OR REPLACE PROCEDURE p9(nume_client IN client.nume%TYPE, nume_furnizor_ IN furnizor.nume_furnizor%TYPE, numar marime.numar_marime%TYPE)
+AS
+    -- Record pentru client
+    TYPE client_record IS RECORD (
+        client_id client.client_id%TYPE,
+        nume client.nume%TYPE,
+        prenume client.prenume%TYPE,
+        email client.email%TYPE,
+        telefon client.numar_telefon%TYPE
+    );
+
+    -- Tablou pentru comenzi
+    TYPE t_comenzi IS TABLE OF comanda.comanda_id%TYPE INDEX BY PLS_INTEGER;
+    v_comenzi t_comenzi;
     
-    NO_DATA_FOUND1 EXCEPTION;
-    NO_DATA_FOUND2 EXCEPTION;
-    TOO_MANY_ROWS1 EXCEPTION;
-    
+    -- Cursor pentru produsele dintr-o comandă
+    CURSOR c_produse_in_comanda(p_comanda_id produse_comandate.comanda_id%TYPE) IS
+        SELECT p.produs_id, p.nume_produs, pc.cantitate
+        FROM produse_comandate pc
+        JOIN produs p ON p.produs_id = pc.produs_id
+        WHERE pc.comanda_id = p_comanda_id;
+
+    v_produs_id produs.produs_id%TYPE;
+    v_denumire produs.nume_produs%TYPE;
+    v_cantitate produse_comandate.cantitate%TYPE;
+
+    v_client client_record;
+    v_total_comenzi INTEGER;
+    v_comenzi_furnizor INTEGER;
+
 BEGIN
-   
-    --selectam clientii cu numele respectiv
-    SELECT *
-    BULK COLLECT INTO clienti
-    FROM client
-    WHERE UPPER(nume) = UPPER(nume_client);
-    
-    --eroare daca nu il gasim
-    IF SQL%NOTFOUND THEN
-        RAISE NO_DATA_FOUND1;
+    BEGIN
+        SELECT client_id, nume, prenume, email, numar_telefon
+        INTO v_client
+        FROM client
+        WHERE UPPER(nume) = UPPER(nume_client);
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('Nu există client cu numele specificat.');
+            RETURN;
+        WHEN TOO_MANY_ROWS THEN
+            DBMS_OUTPUT.PUT_LINE('Există mai mulți clienți cu acest nume!');
+            RETURN;
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Codul de eroare: ' || SQLCODE);
+            DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM);
+            RETURN;
+    END;
+
+    DBMS_OUTPUT.PUT_LINE('Detalii client:');
+    DBMS_OUTPUT.PUT_LINE('Nume: ' || v_client.nume);
+    DBMS_OUTPUT.PUT_LINE('Prenume: ' || v_client.prenume);
+    DBMS_OUTPUT.PUT_LINE('Email: ' || v_client.email);
+    DBMS_OUTPUT.PUT_LINE('Telefon: ' || v_client.telefon);
+    DBMS_OUTPUT.PUT_LINE('');
+
+    SELECT COUNT(*)
+    INTO v_total_comenzi
+    FROM comanda
+    WHERE client_id = v_client.client_id;
+
+    IF v_total_comenzi = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Clientul nu are nicio comandă.');
+        RETURN;
     END IF;
-    
-    --eroare daca avem mai multi clienti cu numele respectiv
-    IF clienti.count >= 2 THEN
-        RAISE TOO_MANY_ROWS1;
-    END IF;
-    
-    --selectam id-ul comenzii cu proprietatile respective
+
     SELECT DISTINCT c.comanda_id
-    BULK COLLECT INTO comenzi
+    BULK COLLECT INTO v_comenzi
     FROM comanda c
     JOIN produse_comandate pc ON pc.comanda_id = c.comanda_id
-    JOIN inventar i ON i.inventar_id = pc.inventar_id
-    JOIN client cl ON (cl.client_id = c.client_id)
-    JOIN produs p ON p.produs_id=i.produs_id
-    JOIN furnizor f ON f.furnizor_id=p.furnizor_id
-    WHERE UPPER(f.nume) = UPPER(nume_furnizor) and UPPER(cl.nume)=UPPER(nume_client);
-    
-    IF comenzi.count = 0 THEN
-        RAISE NO_DATA_FOUND2;
+    JOIN produs p ON p.produs_id = pc.produs_id
+    JOIN furnizor f ON f.furnizor_id = p.furnizor_id
+    JOIN detalii_produs dp on dp.detalii_produs_id= p.detalii_produs_id
+    JOIN marime m on m.marime_id = dp.marime_id
+    WHERE UPPER(f.nume_furnizor) = UPPER(nume_furnizor_)
+    AND c.client_id = v_client.client_id AND m.numar_marime=numar;
+
+
+    IF v_comenzi.COUNT = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Clientul nu are comenzi care să respecte cerintele.');
+        RETURN;
     END IF;
 
-    DBMS_OUTPUT.PUT_LINE('Comenzile clientului cu numele ' || nume_client || ' care contin produse de la furnizorul ' || nume_furnizor|| ' sunt: ');
-    FOR i IN comenzi.FIRST..comenzi.LAST LOOP
-        DBMS_OUTPUT.PUT_LINE(comenzi(i));
+    DBMS_OUTPUT.PUT_LINE('Comenzile clientului cu numele care respecta cerintele sunt:');
+
+    v_comenzi_furnizor := 0;
+
+    FOR i IN v_comenzi.FIRST..v_comenzi.LAST LOOP
+        v_comenzi_furnizor := v_comenzi_furnizor + 1;
+        
+        DBMS_OUTPUT.PUT_LINE('Comanda ID: ' || v_comenzi(i));
+        
+        -- Deschidem cursorul pentru produsele din comanda respectivă
+        OPEN c_produse_in_comanda(v_comenzi(i));
+        LOOP
+            FETCH c_produse_in_comanda INTO v_produs_id, v_denumire, v_cantitate;
+            EXIT WHEN c_produse_in_comanda%NOTFOUND;
+            
+            DBMS_OUTPUT.PUT_LINE('  Produs ID: ' || v_produs_id || ', Denumire: ' || v_denumire || ', Cantitate: ' || v_cantitate);
+        END LOOP;
+        CLOSE c_produse_in_comanda;
     END LOOP;
-    
-    EXCEPTION
-        WHEN NO_DATA_FOUND1 THEN
-            DBMS_OUTPUT.PUT_LINE('Nu exista clienti care sa aiba acest nume de familie!');
-        WHEN NO_DATA_FOUND2 THEN
-            DBMS_OUTPUT.PUT_LINE('Nu exista comenzi care sa aiba produse ce provin de la acel furnizor!');
-        WHEN TOO_MANY_ROWS1 THEN
-            DBMS_OUTPUT.PUT_LINE('Exista mai mult de un client cu acel nume!');
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('Codul de eroare: '  || SQLCODE);
-            DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM); 
-END;
-/
-DECLARE
-    nume client.nume%type :='&nume';
-BEGIN
-    afisare_clienti_comenzi_(nume,'XYZ Supplier Ltd.');
-END;
-/
-SET SERVEROUTPUT ON;
 
---10
--- voi realiza un trigger care se va declansa atunci cand vreau sa modific tabela comanda in zilele libere sau in intervalul orar 00:00-5:00
---zilele libere sunt : 1 dec, 25 dec si 1 ian
-CREATE OR REPLACE TRIGGER Ex10
-BEFORE INSERT OR UPDATE OR DELETE ON comanda
-DECLARE 
-   
+    IF v_comenzi_furnizor = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Clientul nu are comenzi care să conțină produse de la furnizorul ' || nume_furnizor_ || '.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('');
+        DBMS_OUTPUT.PUT_LINE('Număr total de comenzi: ' || v_total_comenzi);
+        DBMS_OUTPUT.PUT_LINE('Număr de comenzi care conțin produse de la furnizorul ' || nume_furnizor_ || ' pe marimea ' || numar || ': ' || v_comenzi_furnizor);
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Codul de eroare: ' || SQLCODE);
+        DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM);
+END;
+/
+
+
+DECLARE
+    nume_client client.nume%TYPE := 'Horga';
+    nume_furnizor_ furnizor.nume_furnizor%TYPE := 'Supplier Inc.';
+numar marime.numar_marime%TYPE:='36';
 BEGIN
-     IF((TO_CHAR(sysdate, 'HH24') BETWEEN 0 AND 5) OR TO_CHAR(sysdate, 'DD-MM') = '01-12' OR TO_CHAR(sysdate, 'DD-MM') = '25-12' OR TO_CHAR(sysdate, 'DD-MM') = '01-01')
-        THEN RAISE_APPLICATION_ERROR(-20001, 'Nu poti modifica tabela in aceasta zi sau in cadrul acestui interval orar!');
+    p9(nume_client, nume_furnizor_,numar);
+END;
+/
+
+
+
+INSERT INTO client
+VALUES(7,'Stefan', 'Maria','Otelari nr 6 Satu Mare',0726765432,'stefanmaria23@yahoo.com');
+
+
+--10. Definiti un trigger de tip LMD la nivel de comanda. Declan?a?i trigger-ul.
+--Enunt: Definiti un trigger care se declanseaza atunci cand se modifica tabela comanda in zilele libere sau in intervalul orar 18:00-8:00. Scopul acestuia este sa nu permita plasarea de comenzi sau lucrul in afara orelor de munca. Sunt considerate ca zile libere obligatorii 1 decembrie, 25 decembrie si 1 ianuarie.
+
+CREATE OR REPLACE TRIGGER p10
+BEFORE INSERT OR UPDATE OR DELETE ON comanda
+FOR EACH ROW
+BEGIN
+    -- Verific? dac? timpul curent este între 18:00 ?i 08:00
+    IF (TO_NUMBER(TO_CHAR(SYSDATE, 'HH24')) >= 18 OR TO_NUMBER(TO_CHAR(SYSDATE, 'HH24')) < 8) 
+       OR TO_CHAR(SYSDATE, 'DD-MM') IN ('01-12', '25-12', '01-01') THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Nu poti modifica tabela in aceasta zi sau in cadrul acestui interval orar!');
     END IF;
 END;
+/
 
--- ex 11
---Un trigger care se declanseaza atunci cand modific pretul unui produs; afisez pretul nou si cel vechi
+UPDATE comanda
+SET metoda_plata='numerar'
+WHERE comanda_id=1;
 
-CREATE OR REPLACE TRIGGER Ex11
+select * from comanda
+
+--11. Defini?i un trigger de tip LMD la nivel de linie. Declan?a?i trigger-ul.
+--Enunt: Defini?i un trigger care se declanseaza atunci cand modific pretul unui produs. Trebuie afisat pretul nou al acestuia, cat si cel vechi.
+
+CREATE OR REPLACE TRIGGER p11
 BEFORE INSERT OR UPDATE OR DELETE ON produs
 FOR EACH ROW
 DECLARE 
@@ -539,143 +631,127 @@ END;
 /
 
 UPDATE produs
-set pret=80
-where produs_id=133;
+set pret=120
+where produs_id=1;
 
---12
---Un trigger care retine in tabela history istoricul comenzilor
 
-CREATE TABLE history(
-object_type VARCHAR(20),
-object_name VARCHAR(30),
-event VARCHAR(30)
-);
+--12. Defini?i un trigger de tip LDD. Declan?a?i trigger-ul.
+--Enunt: Defini?i un trigger care s? introduc? în tabelul nou definit istoric informa?ii despre comanda folosit? de utilizator, precum: numele bazei de date, numele utilizatorului, evenimentul, numele ?i tipul obiectului ?i data când s-a efectuat comanda.
 
-CREATE OR REPLACE TRIGGER t12
+
+CREATE TABLE istoric(
+baza_de_date VARCHAR2(50), 
+nume_utilizator VARCHAR2(50), 
+eveniment VARCHAR2(50), 
+tip_obiect VARCHAR2(50),
+nume_obiect VARCHAR2(50), 
+data DATE );
+
+CREATE OR REPLACE TRIGGER p12
 BEFORE CREATE OR ALTER OR DROP ON SCHEMA
 BEGIN
-INSERT INTO history
-VALUES(SYS.dictionary_obj_type,SYS.dictionary_obj_name,SYS.sysevent);
+INSERT INTO istoric VALUES( 
+sys.database_name,proiect, sys.login_user, sys.sysevent, sys.dictionary_obj_name, sys.dictionary_obj_type, sysdate );
 END;
-/
 
 CREATE TABLE test_comanda AS SELECT * FROM comanda;
-
 ALTER TABLE test_comanda
 DROP COLUMN livrare_id;
-
 DROP TABLE test_comanda;
+SELECT * FROM istoric;
 
-SELECT* FROM history;
 
---13
---definiti un pachet care sa contina toate obiectele definite  n cadrul proiectului
+--13. Defini?i un pachet care s? con?in? toate obiectele definite în cadrul proiectului.
 
 CREATE OR REPLACE PACKAGE proiect_sgbd AS
-    PROCEDURE afisare_produse_comanda ( p_produs_id produs.produs_id%TYPE);
-    PROCEDURE afisare_clienti_comanda( p_livrare livrare.metoda_livrare%TYPE, p_pret comanda.pret_total%TYPE);
-    FUNCTION afisare_produse_culoare (id culoare.culoare_id%TYPE, categ_ categorie.nume%type) RETURN NUMBER;
-    PROCEDURE afisare_clienti_comenzi_(nume_client client.nume%type,nume_furnizor furnizor.nume%type);
+    PROCEDURE p6 (pret_comanda comanda.pret_total%TYPE,
+categorie_produs categorie.nume_categorie%TYPE);
+    PROCEDURE  p7( p_livrare livrare.metoda_livrare%TYPE, p_pret comanda.pret_total%TYPE);
+    FUNCTION p8(id culoare.culoare_id%TYPE, categ_ categorie.nume_categorie%TYPE) RETURN NUMBER;
+    PROCEDURE p9(nume_client client.nume%TYPE, nume_furnizor_ furnizor.nume_furnizor%TYPE,numar marime.numar_marime%TYPE);
 END proiect_sgbd;
 /
 CREATE OR REPLACE PACKAGE BODY proiect_sgbd 
 AS 
-PROCEDURE afisare_produse_comanda ( p_produs_id produs.produs_id%TYPE) 
+PROCEDURE p6 (pret_comanda comanda.pret_total%TYPE, categorie_produs categorie.nume_categorie%TYPE) 
 AS
-
- TYPE clienti_i IS TABLE OF client%ROWTYPE; -- tablou imbricat
-  clienti_table clienti_i := clienti_i();
-
-  TYPE vector IS VARRAY(100) OF comanda%ROWTYPE; -- VARRAY
-  comanda_table vector := vector();
-
-  numar NUMBER(10):= 0;
-  
+    TYPE p_client IS VARRAY(100) OF client.client_id%TYPE;
+    t_client p_client;
+    TYPE p_comanda IS TABLE OF comanda.comanda_id%TYPE INDEX BY PLS_INTEGER;
+    t_comanda p_comanda;
+    TYPE t_produse_comanda IS TABLE OF produs.nume_produs%TYPE;
+    produse_comanda t_produse_comanda;
+    nr_produse NUMBER;
 BEGIN
-    --numaram cate comenzi au produsul respectiv
-    SELECT COUNT(*)
-    INTO numar
-    FROM produse_comandate pc, inventar i,comanda c
-    WHERE i.inventar_id = pc.inventar_id and pc.inventar_id=c.comanda_id and i.produs_id=p_produs_id;
-            
-  comanda_table.extend(numar+1);
-  
-  --selectam datele despre o comanda care are produsul respectiv
-  SELECT distinct c.*
-  BULK COLLECT INTO comanda_table
-  FROM comanda c
-  JOIN produse_comandate pc ON c.comanda_id = pc.comanda_id
-  JOIN inventar i ON pc.inventar_id = i.inventar_id
-  WHERE i.produs_id = p_produs_id;
-  
-    IF comanda_table.COUNT=0 THEN
-   DBMS_OUTPUT.PUT_LINE('Nu exista comenzi cu produsul respectiv!');
-   RETURN;
-  END IF;
-  
-  --selectam doar clientii care au dat o comanda cu produsul respectiv
-FOR i IN comanda_table.FIRST .. comanda_table.LAST LOOP
-    clienti_table.EXTEND;
-    SELECT DISTINCT cl.*
-    INTO clienti_table(clienti_table.LAST)
-    FROM client cl
-    WHERE cl.client_id = comanda_table(i).client_id;
-END LOOP;
-   
-      --daca am gasit comenzi afisam produsele
-IF comanda_table.COUNT > 0 THEN
-   FOR i IN clienti_table.FIRST .. clienti_table.LAST LOOP
-   DBMS_OUTPUT.PUT_LINE('Client ID: ' || clienti_table(i).client_id);
-   DBMS_OUTPUT.PUT_LINE(clienti_table(i).nume ||' ' || clienti_table(i).prenume);
-   DBMS_OUTPUT.PUT_LINE(clienti_table(i).email);
-   DBMS_OUTPUT.PUT_LINE('----------------------------------------------------');
-   
-        FOR j IN comanda_table.FIRST .. comanda_table.LAST LOOP
-          IF comanda_table(j).client_id=clienti_table(i).client_id THEN
-             DECLARE
-                    TYPE produse_i IS TABLE OF VARCHAR(100) INDEX BY PLS_INTEGER; --tablou indexat
-                    produse_table produse_i;
-             BEGIN
-              SELECT p.nume
-              BULK COLLECT INTO produse_table
-              FROM produse_comandate pc, inventar i, produs p
-              WHERE p.produs_id=i.produs_id and i.inventar_id = pc.inventar_id and pc.comanda_id=comanda_table(j).comanda_id;
-       
-              DBMS_OUTPUT.PUT_LINE('  Comanda ID: ' || comanda_table(j).comanda_id);
-              DBMS_OUTPUT.PUT_LINE('---------------------');
-               IF produse_table.COUNT > 0 THEN
-                 FOR k IN produse_table.FIRST .. produse_table.LAST LOOP
-                   numar := numar + 1;
-                   DBMS_OUTPUT.PUT_LINE(k || '. ' || produse_table(k));
-                 END LOOP;
-               END IF;
-            END;
-           END IF; 
-        END LOOP;
-            DBMS_OUTPUT.NEW_LINE;
-            DBMS_OUTPUT.NEW_LINE;
-   END LOOP;
-END IF;
-END afisare_produse_comanda;
 
-PROCEDURE afisare_clienti_comanda( p_livrare livrare.metoda_livrare%TYPE, p_pret comanda.pret_total%TYPE) AS 
-   
-   --selectam numele si prenumele clientului avand id-ul de livrare        
-  CURSOR clienti (id comanda.livrare_id%TYPE) IS
+    SELECT distinct cl.client_id
+    BULK COLLECT INTO t_client
+    FROM client cl
+    JOIN comanda c ON cl.client_id = c.client_id
+    WHERE c.pret_total >= pret_comanda;
+
+    IF t_client.COUNT = 0 THEN
+        RAISE NO_DATA_FOUND;
+    END IF;
+
+    FOR i IN t_client.FIRST..t_client.LAST LOOP
+        SELECT c.comanda_id
+        BULK COLLECT INTO t_comanda
+        FROM comanda c
+        WHERE c.pret_total >= pret_comanda AND c.client_id = t_client(i);
+
+        FOR j IN t_comanda.FIRST..t_comanda.LAST LOOP
+            SELECT COUNT(pd.produs_id)
+            INTO nr_produse
+            FROM produs p
+            JOIN categorie c ON p.categorie_id = c.categorie_id
+            JOIN produse_comandate pd ON p.produs_id = pd.produs_id
+            WHERE UPPER(c.nume_categorie) = UPPER(categorie_produs)
+            AND pd.comanda_id = t_comanda(j);
+
+            IF nr_produse = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('In comanda cu ID_ul ' || t_comanda(j) || ', clientul cu ID-ul ' || t_client(i) || ' nu are produse din categoria respectiva.');   
+            ELSE
+                SELECT p.nume_produs
+                BULK COLLECT INTO produse_comanda
+                FROM produs p
+                JOIN categorie c ON p.categorie_id = c.categorie_id
+                JOIN produse_comandate pd ON p.produs_id = pd.produs_id
+                WHERE UPPER(c.nume_categorie) = UPPER(categorie_produs)
+                AND pd.comanda_id = t_comanda(j);
+
+                DBMS_OUTPUT.PUT_LINE('In comanda ' || t_comanda(j) || ', clientul ' || t_client(i) || ' are produsele:');
+                
+                FOR k IN produse_comanda.FIRST..produse_comanda.LAST LOOP
+                    DBMS_OUTPUT.PUT_LINE(k || '. ' || produse_comanda(k));
+                END LOOP;
+            END IF;
+        END LOOP;
+        DBMS_OUTPUT.PUT_LINE('------------------------');
+    END LOOP;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20000, 'Nu exista comenzi cu un pret total mai mare de '|| pret_comanda);
+END p6;
+
+PROCEDURE  p7(p_livrare livrare.metoda_livrare%TYPE, p_pret comanda.pret_total%TYPE) AS 
+    -- Select?m numele ?i prenumele clientului având ID-ul de livrare       
+    CURSOR clienti (id comanda.livrare_id%TYPE) IS
         SELECT c.nume || ' ' || c.prenume AS result
         FROM client c
         JOIN comanda co ON c.client_id = co.client_id
         WHERE co.livrare_id = id;
     
-    --selectam id-ul livrarilor care au ca metoda de livrare curier, si au ca pret_total o suma mai mare de p_pret
-  CURSOR livrari (p_livrare livrare.metoda_livrare%TYPE) IS
-                SELECT l.livrare_id
-                FROM livrare l
-                JOIN comanda co on co.livrare_id=l.livrare_id
-                WHERE UPPER(l.metoda_livrare) LIKE UPPER(p_livrare) AND co.pret_total >= p_pret;
+    -- Select?m ID-ul livr?rilor care au ca metod? de livrare curier ?i au un pre? total mai mare de p_pret
+    CURSOR livrari (p_livrare livrare.metoda_livrare%TYPE) IS
+        SELECT l.livrare_id
+        FROM livrare l
+        JOIN comanda co ON co.livrare_id = l.livrare_id
+        WHERE UPPER(l.metoda_livrare) LIKE UPPER(p_livrare) AND co.pret_total >= p_pret;
   
-  --selectam comenzile avand id-ul lor de livrare          
-  CURSOR comenzi (id livrare.livrare_id%TYPE ) IS
+    -- Select?m comenzile având ID-ul lor de livrare          
+    CURSOR comenzi (id livrare.livrare_id%TYPE ) IS
         SELECT comanda_id, pret_total, metoda_plata
         FROM comanda 
         WHERE livrare_id = id;
@@ -683,162 +759,250 @@ PROCEDURE afisare_clienti_comanda( p_livrare livrare.metoda_livrare%TYPE, p_pret
     id comanda.comanda_id%TYPE;
     pret comanda.pret_total%TYPE;
     plata comanda.metoda_plata%TYPE;
-    
+    nr_comenzi NUMBER;
+    nr_livrari NUMBER;
 BEGIN
-    FOR livrari_i in livrari(p_livrare) LOOP
+    SELECT COUNT(*)
+    INTO nr_livrari
+    FROM livrare l
+    JOIN comanda co ON co.livrare_id = l.livrare_id
+    WHERE UPPER(l.metoda_livrare) LIKE UPPER(p_livrare) AND co.pret_total >= p_pret;
+
+    IF nr_livrari = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Nu s-au g?sit livr?ri care s? corespund? criteriilor specificate.');
+        RETURN;
+    END IF;
+
+    FOR livrari_i IN livrari(p_livrare) LOOP
         OPEN comenzi(livrari_i.livrare_id);
-            FETCH comenzi INTO id,pret,plata;
-            DBMS_OUTPUT.PUT_LINE('Comanda cu numarul ' || id);
-            DBMS_OUTPUT.PUT_LINE('------------------------');
-            DBMS_OUTPUT.PUT_LINE('Pret:' || pret);
-            DBMS_OUTPUT.PUT_LINE('Metoda plata:' || plata);
+        FETCH comenzi INTO id, pret, plata;
+            
+        DBMS_OUTPUT.PUT_LINE('Comanda cu num?rul ' || id);
+        DBMS_OUTPUT.PUT_LINE('------------------------');
+        DBMS_OUTPUT.PUT_LINE('Pre?: ' || pret);
+        DBMS_OUTPUT.PUT_LINE('Metoda plat?: ' || plata);
+            
         CLOSE comenzi;
-        
+            
         FOR clienti_i IN clienti(livrari_i.livrare_id) LOOP
-            DBMS_OUTPUT.PUT_LINE(clienti_i.result);
+                DBMS_OUTPUT.PUT_LINE(clienti_i.result);
         END LOOP;
-        
+
         DBMS_OUTPUT.NEW_LINE;
         DBMS_OUTPUT.NEW_LINE;
     END LOOP;
-END afisare_clienti_comanda;
- 
- FUNCTION afisare_produse_culoare(id culoare.culoare_id%TYPE, categ_ categorie.nume%type) RETURN NUMBER 
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('A aparut o eroare: ' || SQLERRM);
+END p7; 
+
+FUNCTION p8(id culoare.culoare_id%TYPE, categ_ categorie.nume_categorie%TYPE) RETURN NUMBER 
 IS 
     nr_produse NUMBER;
-    TYPE tip_tabel IS TABLE OF inventar%rowtype INDEX BY PLS_INTEGER;
-    tabel tip_tabel;
-    categ categorie.categorie_id%type;
+    TYPE t_produse IS TABLE OF detalii_produs%ROWTYPE INDEX BY PLS_INTEGER;
+    tabel_produse t_produse;
+    categorie_produs categorie.categorie_id%TYPE;
     
     --exceptii
-    NEGATIVE_NUMBER EXCEPTION;
-    NO_DATA_FOUND1 EXCEPTION;
-    NO_DATA_FOUND2 EXCEPTION;
+    INVALID_COLOUR_ID EXCEPTION;
+    NO_PRODUCTS_FOUND EXCEPTION;
+    NO_ORDERS_FOUND EXCEPTION;
 
 BEGIN 
-    IF id < 0 THEN -- codul culorii nu e valid
-        RAISE NEGATIVE_NUMBER;
+    IF id < 11 OR id > 18 THEN -- codul culorii nu e valid
+        RAISE INVALID_COLOUR_ID;
     END IF;
     
     --selectam toate produsele din inventar care sunt pe culoarea respectiva
     SELECT *
-    BULK COLLECT INTO tabel
-    FROM inventar
+    BULK COLLECT INTO tabel_produse
+    FROM detalii_produs
     WHERE culoare_id = id;
     
-    --avem mesaj de eroare in cazul in care nu le gasim
-    IF SQL%NOTFOUND THEN
-        RAISE NO_DATA_FOUND1;
+    --avem mesaj de eroare in cazul in care nu gasim produse
+    IF tabel_produse.COUNT = 0 THEN
+        RAISE NO_PRODUCTS_FOUND;
     END IF;
     
-    --cautam id-ul pentru 'imbracaminte'
+    --cautam id-ul pentru categoria dorita avand numele
     SELECT categorie_id
-    INTO categ
-    FROM categorie
-    WHERE UPPER(nume) LIKE UPPER(categ_);
-    
-    --cautam numarul de produse cu respectivele conditii
-   SELECT COUNT(i.inventar_id)
-   INTO nr_produse
-   FROM produse_comandate pc 
-   JOIN inventar i ON (i.inventar_id = pc.inventar_id)
-   JOIN produs p on (p.produs_id=i.produs_id)
-   WHERE i.culoare_id = id and p.categorie_id=categ;
+    INTO categorie_produs
+    FROM categorie 
+    WHERE UPPER(nume_categorie) LIKE UPPER(categ_);
+
+    --cautam numarul de produse care indeplinesc conditiile
+    SELECT COUNT(pc.produs_id)
+    INTO nr_produse
+    FROM produse_comandate pc 
+    JOIN produs p ON p.produs_id = pc.produs_id
+    JOIN detalii_produs dp ON dp.detalii_produs_id = p.detalii_produs_id
+    WHERE dp.culoare_id = id AND p.categorie_id = categorie_produs;
 
     --eroare in cazul in care nu exista produse
-    IF nr_produse = 0  THEN
-        RAISE NO_DATA_FOUND2;
+    IF nr_produse = 0 THEN
+        RAISE NO_ORDERS_FOUND;
     END IF;
     
     RETURN nr_produse;
     
-    EXCEPTION
-        WHEN NEGATIVE_NUMBER THEN
-            DBMS_OUTPUT.PUT_LINE('Codul culorii nu poate sa fie negativ!');
-            RETURN -1;
-        WHEN NO_DATA_FOUND1 THEN
-            DBMS_OUTPUT.PUT_LINE('Nu exista produse pe culoarea cu codul ' || id);
-            RETURN -1;
-        WHEN NO_DATA_FOUND2 THEN
-            DBMS_OUTPUT.PUT_LINE('Nu exista produse de imbracaminte cumparate cu acea culoare!');
-            RETURN -1;
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('Codul de eroare: '  || SQLCODE);
-            DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM); 
-            RETURN -1;
-END afisare_produse_culoare;
+EXCEPTION
+    WHEN INVALID_COLOUR_ID THEN
+        DBMS_OUTPUT.PUT_LINE('Codul culorii este invalid!');
+        RETURN -1;
+    WHEN NO_PRODUCTS_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Nu exista produse pe culoarea cu codul ' || id);
+        RETURN -1;
+    WHEN NO_ORDERS_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Nu exista produse de tipul ' || categ_ || ' cumparate cu acea culoare!');
+        RETURN -1;
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Codul de eroare: '  || SQLCODE);
+        DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM); 
+        RETURN -1;
+END p8;
 
-PROCEDURE afisare_clienti_comenzi_(nume_client client.nume%type,nume_furnizor furnizor.nume%type)
-AS 
-    TYPE tabel_index IS TABLE OF comanda.comanda_id%type INDEX BY PLS_INTEGER;
-    comenzi tabel_index;
-    TYPE tabel_index_clienti IS TABLE OF client%rowtype INDEX BY PLS_INTEGER;
-    clienti tabel_index_clienti;
+PROCEDURE p9(nume_client IN client.nume%TYPE, nume_furnizor_ IN furnizor.nume_furnizor%TYPE, numar marime.numar_marime%TYPE)
+AS
+    -- Record pentru client
+    TYPE client_record IS RECORD (
+        client_id client.client_id%TYPE,
+        nume client.nume%TYPE,
+        prenume client.prenume%TYPE,
+        email client.email%TYPE,
+        telefon client.numar_telefon%TYPE
+    );
+
+    -- Tablou pentru comenzi
+    TYPE t_comenzi IS TABLE OF comanda.comanda_id%TYPE INDEX BY PLS_INTEGER;
+    v_comenzi t_comenzi;
     
-    NO_DATA_FOUND1 EXCEPTION;
-    NO_DATA_FOUND2 EXCEPTION;
-    TOO_MANY_ROWS1 EXCEPTION;
-    
+    -- Cursor pentru produsele dintr-o comandă
+    CURSOR c_produse_in_comanda(p_comanda_id produse_comandate.comanda_id%TYPE) IS
+        SELECT p.produs_id, p.nume_produs, pc.cantitate
+        FROM produse_comandate pc
+        JOIN produs p ON p.produs_id = pc.produs_id
+        WHERE pc.comanda_id = p_comanda_id;
+
+    v_produs_id produs.produs_id%TYPE;
+    v_denumire produs.nume_produs%TYPE;
+    v_cantitate produse_comandate.cantitate%TYPE;
+
+    v_client client_record;
+    v_total_comenzi INTEGER;
+    v_comenzi_furnizor INTEGER;
+
 BEGIN
-   
-    --selectam clientii cu numele respectiv
-    SELECT *
-    BULK COLLECT INTO clienti
-    FROM client
-    WHERE UPPER(nume) = UPPER(nume_client);
-    
-    --eroare daca nu il gasim
-    IF SQL%NOTFOUND THEN
-        RAISE NO_DATA_FOUND1;
+    BEGIN
+        SELECT client_id, nume, prenume, email, numar_telefon
+        INTO v_client
+        FROM client
+        WHERE UPPER(nume) = UPPER(nume_client);
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('Nu există client cu numele specificat.');
+            RETURN;
+        WHEN TOO_MANY_ROWS THEN
+            DBMS_OUTPUT.PUT_LINE('Există mai mulți clienți cu acest nume!');
+            RETURN;
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Codul de eroare: ' || SQLCODE);
+            DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM);
+            RETURN;
+    END;
+
+    DBMS_OUTPUT.PUT_LINE('Detalii client:');
+    DBMS_OUTPUT.PUT_LINE('Nume: ' || v_client.nume);
+    DBMS_OUTPUT.PUT_LINE('Prenume: ' || v_client.prenume);
+    DBMS_OUTPUT.PUT_LINE('Email: ' || v_client.email);
+    DBMS_OUTPUT.PUT_LINE('Telefon: ' || v_client.telefon);
+    DBMS_OUTPUT.PUT_LINE('');
+
+    SELECT COUNT(*)
+    INTO v_total_comenzi
+    FROM comanda
+    WHERE client_id = v_client.client_id;
+
+    IF v_total_comenzi = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Clientul nu are nicio comandă.');
+        RETURN;
     END IF;
-    
-    --eroare daca avem mai multi clienti cu numele respectiv
-    IF clienti.count >= 2 THEN
-        RAISE TOO_MANY_ROWS1;
-    END IF;
-    
-    --selectam id-ul comenzii cu proprietatile respective
+
     SELECT DISTINCT c.comanda_id
-    BULK COLLECT INTO comenzi
+    BULK COLLECT INTO v_comenzi
     FROM comanda c
     JOIN produse_comandate pc ON pc.comanda_id = c.comanda_id
-    JOIN inventar i ON i.inventar_id = pc.inventar_id
-    JOIN client cl ON (cl.client_id = c.client_id)
-    JOIN produs p ON p.produs_id=i.produs_id
-    JOIN furnizor f ON f.furnizor_id=p.furnizor_id
-    WHERE UPPER(f.nume) = UPPER(nume_furnizor) and UPPER(cl.nume)=UPPER(nume_client);
-    
-    IF comenzi.count = 0 THEN
-        RAISE NO_DATA_FOUND2;
+    JOIN produs p ON p.produs_id = pc.produs_id
+    JOIN furnizor f ON f.furnizor_id = p.furnizor_id
+    JOIN detalii_produs dp on dp.detalii_produs_id= p.detalii_produs_id
+    JOIN marime m on m.marime_id = dp.marime_id
+    WHERE UPPER(f.nume_furnizor) = UPPER(nume_furnizor_)
+    AND c.client_id = v_client.client_id AND m.numar_marime=numar;
+
+
+    IF v_comenzi.COUNT = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Clientul nu are comenzi care să respecte cerintele.');
+        RETURN;
     END IF;
 
-    DBMS_OUTPUT.PUT_LINE('Comenzile clientului cu numele ' || nume_client || ' care contin produse de la furnizorul ' || nume_furnizor|| ' sunt: ');
-    FOR i IN comenzi.FIRST..comenzi.LAST LOOP
-        DBMS_OUTPUT.PUT_LINE(comenzi(i));
-    END LOOP;
-    
-    EXCEPTION
-        WHEN NO_DATA_FOUND1 THEN
-            DBMS_OUTPUT.PUT_LINE('Nu exista clienti care sa aiba acest nume de familie!');
-        WHEN NO_DATA_FOUND2 THEN
-            DBMS_OUTPUT.PUT_LINE('Nu exista comenzi care sa aiba produse ce provin de la acel furnizor!');
-        WHEN TOO_MANY_ROWS1 THEN
-            DBMS_OUTPUT.PUT_LINE('Exista mai mult de un client cu acel nume!');
-        WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('Codul de eroare: '  || SQLCODE);
-            DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM); 
-END afisare_clienti_comenzi_;
+    DBMS_OUTPUT.PUT_LINE('Comenzile clientului cu numele care respecta cerintele sunt:');
 
-END proiect_sgbd;
+    v_comenzi_furnizor := 0;
+
+    FOR i IN v_comenzi.FIRST..v_comenzi.LAST LOOP
+        v_comenzi_furnizor := v_comenzi_furnizor + 1;
+        
+        DBMS_OUTPUT.PUT_LINE('Comanda ID: ' || v_comenzi(i));
+        
+        -- Deschidem cursorul pentru produsele din comanda respectivă
+        OPEN c_produse_in_comanda(v_comenzi(i));
+        LOOP
+            FETCH c_produse_in_comanda INTO v_produs_id, v_denumire, v_cantitate;
+            EXIT WHEN c_produse_in_comanda%NOTFOUND;
+            
+            DBMS_OUTPUT.PUT_LINE('  Produs ID: ' || v_produs_id || ', Denumire: ' || v_denumire || ', Cantitate: ' || v_cantitate);
+        END LOOP;
+        CLOSE c_produse_in_comanda;
+    END LOOP;
+
+    IF v_comenzi_furnizor = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Clientul nu are comenzi care să conțină produse de la furnizorul ' || nume_furnizor_ || '.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('');
+        DBMS_OUTPUT.PUT_LINE('Număr total de comenzi: ' || v_total_comenzi);
+        DBMS_OUTPUT.PUT_LINE('Număr de comenzi care conțin produse de la furnizorul ' || nume_furnizor_ || ' pe marimea ' || numar || ': ' || v_comenzi_furnizor);
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Codul de eroare: ' || SQLCODE);
+        DBMS_OUTPUT.PUT_LINE('Mesajul erorii: ' || SQLERRM);
+END p9;
+END proiect_sgbd; 
 /
--- testare package
-EXECUTE proiect_sgbd.afisare_produse_comanda(131);
-EXECUTE proiect_sgbd.afisare_clienti_comanda('curier', 200);
+
+
+EXECUTE proiect_sgbd.p6(250,'accesorii');
+EXECUTE proiect_sgbd.p7('curier', 400);
+DECLARE 
+    numar NUMBER;
+    id culoare.culoare_id%TYPE := &id;
+    categ_ categorie.nume_categorie%TYPE := 'imbracaminte';
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Rezultatul pentru culoarea data este: ' || proiect_sgbd.afisare_produse_culoare(11,'imbracaminte'));
+    numar := proiect_sgbd.p8(id, categ_);
+    IF numar > -1 THEN
+        DBMS_OUTPUT.PUT_LINE('Rezultatul pentru culoarea cu id-ul ' || id || ' este: ' || numar);
+    END IF;
 END;
 /
-EXECUTE proiect_sgbd.afisare_clienti_comenzi_('horga','XYZ Supplier Ltd.');
+DECLARE
+    nume_client client.nume%TYPE := 'Horga';
+    nume_furnizor_ furnizor.nume_furnizor%TYPE := 'Suppliers Inc.';
+    numar marime.numar_marime%TYPE:='36';
+BEGIN
+    proiect_sgbd.p9(nume_client, nume_furnizor_,numar);
+END;
+/
 
 
 
